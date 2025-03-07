@@ -22,6 +22,7 @@ const ctx = canvas.getContext('2d');
 const socket = io('http://localhost:3000');
 
 let gameState;
+let playerPaddle = null; // Track which paddle the player controls
 
 // Handle initialization from the server
 socket.on('init', (data) => {
@@ -33,6 +34,11 @@ socket.on('init', (data) => {
 socket.on('updateGameState', (newGameState) => {
     gameState = newGameState;
     renderGame();
+});
+
+// Handle paddle assignment
+socket.on('assignPaddle', (paddle) => {
+    playerPaddle = paddle; // Assign the paddle to the player
 });
 
 // Render the game
@@ -47,6 +53,13 @@ function renderGame() {
         }
     });
 
+    // Render paddles
+    ctx.fillStyle = gameState.paddles.player1.color;
+    ctx.fillRect(gameState.paddles.player1.x, gameState.paddles.player1.y, gameState.paddles.player1.width, gameState.paddles.player1.height);
+
+    ctx.fillStyle = gameState.paddles.player2.color;
+    ctx.fillRect(gameState.paddles.player2.x, gameState.paddles.player2.y, gameState.paddles.player2.width, gameState.paddles.player2.height);
+
     // Render ball
     ctx.beginPath();
     ctx.arc(gameState.ball.x, gameState.ball.y, gameState.ball.radius, 0, Math.PI * 2);
@@ -54,11 +67,22 @@ function renderGame() {
     ctx.fill();
     ctx.closePath();
 
-    // Render score
+    // Render scores
     ctx.fillStyle = 'white';
     ctx.font = '20px Arial';
-    ctx.fillText(`Score: ${gameState.score}`, 10, 30);
+    ctx.fillText(`Player 1: ${gameState.scores.player1}`, 10, 30); // Player 1 score
+    ctx.fillText(`Player 2: ${gameState.scores.player2}`, canvas.width - 150, 30); // Player 2 score
 }
+
+// Handle paddle movement
+document.addEventListener('keydown', (event) => {
+    if (playerPaddle) {
+        const deltaX = event.key === 'ArrowLeft' ? -10 : event.key === 'ArrowRight' ? 10 : 0;
+        if (deltaX !== 0) {
+            socket.emit('movePaddle', { player: playerPaddle, deltaX });
+        }
+    }
+});
 
 // Start game when the button is clicked
 startButton.addEventListener('click', () => {
