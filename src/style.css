@@ -1,0 +1,31 @@
+/* style.css */
+body {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #333;
+    font-family: Arial, sans-serif;
+}
+
+canvas {
+    background-color: #000;
+    border: 2px solid #fff;
+    margin-bottom: 20px; /* Add space between canvas and button */
+}
+
+#startButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#startButton:hover {
+    background-color: #0056b3;
+}
