@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: bricks-game-2players
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    env: node
+    envVars:
+      - key: NODE_ENV
+        value: production
+    plan: free # Use the free plan for testing
