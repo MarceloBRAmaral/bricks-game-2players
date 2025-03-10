@@ -19,7 +19,7 @@ document.body.appendChild(startButton);
 const ctx = canvas.getContext('2d');
 
 // Connect to the Node.js server
-const socket = io('http://localhost:3000');
+const socket = io(import.meta.env.VITE_SOCKET_IO_URL || 'http://localhost:3000');
 
 let gameState;
 let playerPaddle = null; // Track which paddle the player controls
