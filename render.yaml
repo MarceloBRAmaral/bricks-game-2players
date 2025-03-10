@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: bricks-game-2players
+    name: brick-game
     runtime: node
     buildCommand: npm install && npm run build
     startCommand: npm start
@@ -8,4 +8,10 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-    plan: free # Use the free plan for testing
+      - key: PORT
+        value: 10000
+      - key: VITE_SOCKET_IO_URL
+        value: https://bricks-game.onrender.com
+      - key: FRONTEND_URL
+        value: https://bricks-game.onrender.com
+    plan: free

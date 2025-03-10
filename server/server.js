@@ -11,6 +11,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const server = http.createServer(app);
 
+const PORT = process.env.PORT || 3000; // Use Render's port or fallback to 3000 for local development
+
 // Configure CORS for Socket.IO
 const io = new Server(server, {
     cors: {
@@ -85,6 +87,11 @@ function respawnBall() {
 generateBricks();
 
 app.use(express.static(path.join(__dirname, '../dist')));
+
+// Handle all other routes by serving the index.html file
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
 
 io.on('connection', (socket) => {
     const playerId = `Player ${players.length + 1}`;
@@ -198,6 +205,6 @@ function updateGameState() {
 
 setInterval(updateGameState, 16); // ~60 FPS
 
-server.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
+server.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
