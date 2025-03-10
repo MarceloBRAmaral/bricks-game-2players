@@ -14,7 +14,7 @@ const server = http.createServer(app);
 // Configure CORS for Socket.IO
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:5173', // Allow requests from this origin
+        origin: process.env.FRONTEND_URL || 'http://localhost:5173', // Allow requests from the frontend URL
         methods: ['GET', 'POST'], // Allowed HTTP methods
     },
 });
